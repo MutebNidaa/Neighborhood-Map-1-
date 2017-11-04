@@ -61,6 +61,7 @@ function initMap() {
             animation: google.maps.Animation.DROP,
             id: i
         });
+
         // Push the marker to array markers.
         locations[i].marker = marker;
         markers.push(marker);
@@ -68,7 +69,11 @@ function initMap() {
         marker.addListener('click', addListener);
 
     }
-
+        //click on list to show marker
+        function addListener() {
+            populateInfoWindow(this, largeInfowindow);
+            bounceTimer(this, marker);
+        }
 
 }
 
@@ -131,11 +136,7 @@ function viewModel() {
     };
 }
 
-//click on list to show marker
-function addListener() {
-    populateInfoWindow(this, largeInfowindow);
-    bounceTimer(this, marker);
-}
+
 
 function bounceTimer(marker) {
     setTimeout(function() {
