@@ -66,11 +66,7 @@ function initMap() {
         markers.push(marker);
         bounds.extend(marker.position);
         marker.addListener('click', addListener);
-        //click on list to show marker
-        function addListener() {
-            populateInfoWindow(this, largeInfowindow);
-            bounceTimer(this, marker);
-        }
+
     }
 
 
@@ -135,6 +131,11 @@ function viewModel() {
     };
 }
 
+//click on list to show marker
+function addListener() {
+    populateInfoWindow(this, largeInfowindow);
+    bounceTimer(this, marker);
+}
 
 function bounceTimer(marker) {
     setTimeout(function() {
