@@ -13,7 +13,7 @@
 
 <body>
     <aside>
-        <div class="options-box">
+        <div class="box">
             <input class="search"placeholder="Search location"  data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
             <ul data-bind="foreach: testLocations">
                 <li data-bind="text: title,  click: $parent.infoWindow"></li>
