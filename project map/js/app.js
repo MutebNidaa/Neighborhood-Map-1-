@@ -21,7 +21,7 @@ var locations = [{
     title: 'Al Hilal Club',
     location: {lat: 24.605684, lng: 46.624560 }
 }, ];
-//================================================== 
+ 
 function initMap() {
 // Constructor creates a new map and center and zoom are required and create array of markers on the map 
     map = new google.maps.Map(document.getElementById('map'),{
@@ -47,19 +47,13 @@ function initMap() {
         markers.push(marker);
         bounds.extend(marker.position);
         marker.addListener('click', addListener);
-    }
-//click on list to show marker
-    function addListener() {
-        populateInfoWindow(this, largeInfowindow);
-         bounceTimer(this, marker);
+
     }
 
-}
-function Error() {
-    alert("Error! Google Map has failed to load and try again.");
+
 }
 
-//===============================================================
+
 populateInfoWindow = function(marker, infowindow) {
 //wikipedia AJAX request
     var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
@@ -76,24 +70,24 @@ populateInfoWindow = function(marker, infowindow) {
               infowindow.setContent('<h4>' + marker.title + '</h4><p>'+ '</p><a href=\"' + url + '\"> click here For more information </a>');
             }
                 infowindow.marker = marker;
-                
                 infowindow.open(map, marker);
                 marker.setAnimation(google.maps.Animation.BOUNCE);
-            
+               
         }
-    });
+    }).fail (function()  {
+  			alert("Error failed to generate API");
+  		});
 };
-//===================================================
-     function viewModel() {
-           var self = this;
 
-        this.locations = ko.observableArray(locations);
-        this.query=ko.observable('');
-        this.title = ko.observable();
-        this.marker = ko.observable();
+function viewModel() {
+        var self = this;
+        self.locations = ko.observableArray(locations);
+        self.query=ko.observable('');
+        self.title = ko.observable();
+        self.marker = ko.observable();
 
      self.testLocations =ko.computed(function() {
-         var filter = this.query().toLowerCase();
+         var filter = self.query().toLowerCase();
          if (!filter){
               for (var i = 0; i <  markers.length; i++) {
                 markers[i].setVisible(true);
@@ -105,16 +99,12 @@ populateInfoWindow = function(marker, infowindow) {
              
              return ko.utils.arrayFilter(self.locations(), function(locations) {
              for (var i = 0; i <  markers.length; i++) {                    
-            locations.marker.setVisible(locations.title.toLowerCase().indexOf(filter) != -1);
-             }
+            locations.marker.setVisible(locations.title.toLowerCase().indexOf(filter) != -1);}
             return locations.title.toLowerCase().indexOf(filter )!= -1;
                      
         });
              
-         }
-         
-            
-
+         }       
     }, self);
         //click on infoWindow
          this.infoWindow =function(loc) {
@@ -129,9 +119,8 @@ function bounceTimer(marker) {
         }, 1000);
     }
 
-function Error() {
+function onError() {
     alert("Error! Google Map has failed to load and try again.");
 }
 
 ko.applyBindings(new viewModel());
-
